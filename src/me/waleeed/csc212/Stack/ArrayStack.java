@@ -1,4 +1,4 @@
-package me.waleeed.csc212.Week5;
+package me.waleeed.csc212.Stack;
 
 public class ArrayStack<T> implements Stack<T> {
     private int top;
