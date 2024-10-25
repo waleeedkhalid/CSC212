@@ -126,11 +126,10 @@ public class Main {
     public static <T> void printPriorityQueue(LinkedPQ<T> pq) {
         int count = pq.length();
         System.out.print("{");
-        while(count > 0) {
+        for(int i = 0; i < count; i++) {
             PQElement<T> e = pq.serve();
             System.out.print("["+e.data+","+e.priority+"]");
             pq.enqueue(e.data,e.priority);
-            count--;
         }
         System.out.println("}");
     }
@@ -469,7 +468,7 @@ public class Main {
         pq.enqueue("E", 3);
         pq.enqueue("C", 2);
 
-        removePQ(pq, 5);
+        printPriorityQueue(pq);
 
 
     }
@@ -530,34 +529,111 @@ public class Main {
         }
     }
 
+    public static void replaceEnds2(Stack<Integer> s1, Stack<Integer> s2) {
+//      Remove top from S2 and store it in a variable s2Top. And then push it to temp stack.
+        Stack<Integer> tmp = new LinkedStack<>();  // Temporary stack
+        // s2:
+        // s2Top
+        // ..
+        // ..
+        // s2Bottom
+        int s2Top = s2.pop();
+        // ..
+        // ..
+        // s2Bottom
+        tmp.push(s2Top);
+        // s2Top
+//      Remove all elements of S2 and push them to temp stack.
+        while(!s2.empty())
+            tmp.push(s2.pop());
+        // tmp:
+        // s2Bottom
+        // ..
+        // ..
+        // s2Top
+//      Remove the top of temp stack (this one should be the bottom of S2 previously, so you need to store it at s2Bottom) Then push it back to temp. Now temp have all S2 elements reversed.
+        int s2Bottom = tmp.pop();
+        tmp.push(s2Bottom);
+        // tmp:
+        // s2Bottom
+        // ..
+        // ..
+        // s2Top
+//      Return all the elements of temp into S2.
+        while(!tmp.empty())
+            s2.push(tmp.pop());
+        // s2:
+        // s2Top
+        // ..
+        // ..
+        // s2Bottom
+//      Remove the top of S1
+        // s1:
+        // top
+        // ..
+        // bottom
+        s1.pop();
+        // s1:
+        // ..
+        // bottom
+//      Add all remaining elements into temp stack
+        while(!s1.empty())
+            tmp.push(s1.pop());
+        // tmp:
+        // bottom
+        // ..
+//      Remove the top of temp stack (the bottom of S1)
+        tmp.pop();
+        // tmp:
+        // ..
+//      Add s2Bottom to S1
+        s1.push(s2Bottom);
+        // s1:
+        // s2Bottom
+//      Add all elements of temp in S1
+        while(!tmp.empty())
+            s1.push(tmp.pop());
+        // s1:
+        // ..
+        // s2Bottom
+//      Add s2Top into the top of S1
+        s1.push(s2Top);
+        // s1:
+        // s2Top
+        // ...
+        // s2Bottom
+    }
+
+
+
     public static void TestreplaceEnds() {
         Stack<Integer> s1 = new LinkedStack<>();
         Stack<Integer> s2 = new LinkedStack<>();
         // Test 1
-        s1.push(6);
-        s1.push(4);
-        s1.push(10);
-
-        s2.push(6);
-        s2.push(2);
-        s2.push(3);
-        s2.push(1);
-        s2.push(5);
-        s2.push(7);
-        // Test 2
-//        s1.push(1);
-//        s1.push(2);
-//        s1.push(3);
-//        s1.push(9);
-//        s1.push(2);
+//        s1.push(6);
+//        s1.push(4);
+//        s1.push(10);
 //
 //        s2.push(6);
 //        s2.push(2);
 //        s2.push(3);
-//        s2.push(0);
+//        s2.push(1);
 //        s2.push(5);
 //        s2.push(7);
-//        s2.push(9);
+        // Test 2
+        s1.push(1);
+        s1.push(2);
+        s1.push(3);
+        s1.push(9);
+        s1.push(2);
+
+        s2.push(6);
+        s2.push(2);
+        s2.push(3);
+        s2.push(0);
+        s2.push(5);
+        s2.push(7);
+        s2.push(9);
 
         printStack(s1);
         printStack(s2);
